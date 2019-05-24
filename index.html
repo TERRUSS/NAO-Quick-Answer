@@ -1,0 +1,101 @@
+	<html>
+		<head>
+			<title>NAO quick anwser</title>
+			<script src="qimessaging.js"></script>
+			<link rel="stylesheet" href="bulma.css">
+			<meta charset="utf-8">
+			<style>
+				body{
+					padding: 10px;
+				}
+
+				#input{
+					position : absolute;
+					bottom : 10px;
+				}
+			</style>
+		</head>
+
+		<body>
+			
+			<div id="buttons">
+				<button class="button is-large is-danger" id="fortnite">Je joue a fornite</button>
+				<button class="button is-large is-danger" id="bonjour">Bonjour à tous</button>
+				<button class="button is-large is-danger" id="wesh">Wesh wesh canne à pêche</button>
+				<button class="button is-large is-danger" id="jul">Et mercé</button>
+				<button class="button is-large is-danger" id="teamjul">#TeamJul</button>
+				<button class="button is-large is-danger" id="macron">Macron démission</button>
+				<button class="button is-large is-danger" id="gilet">GiléJauné</button>
+			</div>
+			
+
+			<div id="input">
+				<input type="text" class="input" id="buttonName" placeholder="Bouton"></input>
+				<input type="text" class="input" id="textToSay" placeholder="Texte"></input>
+				<button class="button is-danger" id="addButton">Let's go</button>
+			</div>
+
+			<script>
+				
+				var session = new QiSession("192.168.1.6");
+
+				session.socket().on('connect', function () {
+					console.log('QiSession connected!');
+				  // now you can start using your QiSession
+
+					session.service("ALTextToSpeech").done(function (tts) {
+
+						document.getElementById("fortnite").addEventListener('click', function(){
+					  		tts.say("Evidemment que je kiff fornaïte fada");
+						})
+
+						document.getElementById("bonjour").addEventListener('click', function(){
+					  		tts.say("Bonjour à tous ! Bien ou bien ?");
+						})
+
+						document.getElementById("wesh").addEventListener('click', function(){
+					  		tts.say("Wesh wesh canne à pêche");
+						})
+
+						document.getElementById("jul").addEventListener('click', function(){
+					  		tts.say("Et mercé");
+						})
+
+						document.getElementById("teamjul").addEventListener('click', function(){
+					  		tts.say("Team Jul");
+						})
+
+						document.getElementById("macron").addEventListener('click', function(){
+					  		tts.say("macron démission");
+						})
+
+						document.getElementById("gilet").addEventListener('click', function(){
+					  		tts.say("gilé jauné");
+						})
+
+						document.getElementById("addButton").addEventListener('click', function () {
+
+							console.log('tests')
+
+						let name = document.getElementById("buttonName").value;
+						let text = document.getElementById("textToSay").value;
+
+						document.getElementById('buttons').innerHTML += `
+							<button class="button is-large is-danger" id="`+name.replace(/\s/g, '')+`">`+name+`</button>
+						`
+						document.getElementById(name.replace(/\s/g, '')).addEventListener('click', function () {
+							tts.say(text);
+						})
+					})
+
+					}).fail(function (error) {
+					  console.log("An error occurred:", error);
+					});
+
+				}).on('disconnect', function () {
+					console.log('QiSession disconnected!');
+				});
+			</script>
+
+		</body>
+	</html>
